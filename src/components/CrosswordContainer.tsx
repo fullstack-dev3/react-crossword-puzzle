@@ -1,15 +1,24 @@
-import { useEffect, useState } from 'react';
-import { Beginner } from '../helpers/data/Words';
+import React, { useEffect, useState } from 'react';
+import { Easy } from '../helpers/data/EasyWords';
+import { Normal } from '../helpers/data/NormalWords';
+import { Expert } from '../helpers/data/ExpertWords';
 import { GetCrossword } from '../helpers/functions';
 import { Crossword } from '../helpers/models/Crossword';
 
-const CrosswordContainer = () => {
+const CrosswordContainer: React.FC<{level: string}> = (props) => {
   const [data, setData] = useState<Crossword | undefined>(undefined);
+
   useEffect(() => {
-    if (Beginner.length > 0) {
-      setData(GetCrossword(Beginner));
+    if (props.level === 'easy' && Easy.length > 0) {
+      setData(GetCrossword(Easy, 5));
     }
-  }, []);
+    if (props.level === 'normal' && Normal.length > 0) {
+      setData(GetCrossword(Normal, 10));
+    }
+    if (props.level === 'expert' && Expert.length > 0) {
+      setData(GetCrossword(Expert, 20));
+    }
+  }, [props.level]);
 
   return (
     <div className='p-2'>
@@ -29,8 +38,8 @@ const CrosswordContainer = () => {
                   key={subItem.key}
                   className='text-center'
                   style={{
-                    border: subItem.empty ? 'none' : 'solid',
                     borderColor: 'gray',
+                    borderStyle: subItem.empty ? 'none' : 'solid',
                     borderWidth: 1,
                     fontSize: 24,
                     height: '100%',

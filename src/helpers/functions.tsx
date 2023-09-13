@@ -19,15 +19,11 @@ export const ShuffleData = (data: string[]): string[] => {
   }
 };
 
-export const GetCrossword = (data: string[]): Crossword | undefined => {
+export const GetCrossword = (data: string[], count: number): Crossword | undefined => {
   try {
-    if (data.length === 0) {
-      return undefined
-    }
-
     const shuffle = [...ShuffleData(data)];
     
-    const result = CWG(shuffle.slice(0, 10));
+    const result = CWG(shuffle.slice(0, count));
     
     const height: number = result.height;
     const width: number = result.width;
