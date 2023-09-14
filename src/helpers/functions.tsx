@@ -19,7 +19,13 @@ export const ShuffleData = (data: string[]): string[] => {
   }
 };
 
-export const GetCrossword = (data: string[], count: number): Crossword | undefined => {
+export const GetCrossword = (data: string[], count: number): Crossword => {
+  const initialValue: Crossword = {
+    puzzle: [],
+    height: 0,
+    width: 0
+  }
+
   try {
     const shuffle = [...ShuffleData(data)];
     
@@ -29,7 +35,7 @@ export const GetCrossword = (data: string[], count: number): Crossword | undefin
     const width: number = result.width;
 
     if (height < 1 && width < 1) {
-      return undefined;
+      return initialValue;
     }
 
     let puzzle: CrosswordPuzzle[][] = [];
@@ -74,6 +80,6 @@ export const GetCrossword = (data: string[], count: number): Crossword | undefin
       height
     };
   } catch {
-    return undefined;
+    return initialValue;
   }
 }

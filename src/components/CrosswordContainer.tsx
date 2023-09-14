@@ -6,7 +6,13 @@ import { GetCrossword } from '../helpers/functions';
 import { Crossword } from '../helpers/models/Crossword';
 
 const CrosswordContainer: React.FC<{level: string}> = (props) => {
-  const [data, setData] = useState<Crossword | undefined>(undefined);
+  let initialValue: Crossword = {
+    puzzle: [],
+    height: 0,
+    width: 0
+  }
+
+  const [data, setData] = useState<Crossword>(initialValue);
 
   useEffect(() => {
     if (props.level === 'easy' && Easy.length > 0) {
@@ -22,7 +28,7 @@ const CrosswordContainer: React.FC<{level: string}> = (props) => {
 
   return (
     <div className='p-2'>
-      {data && data.puzzle.map((item, index) => {
+      {data.puzzle.map((item, index) => {
         return (
           <div
             key={index}
