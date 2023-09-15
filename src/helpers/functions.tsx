@@ -3,6 +3,8 @@
 import CWG from 'cwg';
 import { Crossword, CrosswordPuzzle, clickable } from './models/Crossword';
 
+const alphabets = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
 export const ShuffleData = (data: string[]): string[] => {
   let result: string[] = [];
 
@@ -24,7 +26,9 @@ export const GetCrossword = (data: string[], count: number): Crossword => {
   const initialValue: Crossword = {
     puzzle: [],
     height: 0,
-    width: 0
+    width: 0,
+    currentIndexes: [],
+    horizon: false
   }
 
   try {
@@ -53,7 +57,10 @@ export const GetCrossword = (data: string[], count: number): Crossword => {
           clicked: false,
           horizonActive: false,
           hCorrect: '',
-          vCorrect: ''
+          vCorrect: '',
+          userInput: '',
+          done: false,
+          wrong: false
         });
       }
 
@@ -114,11 +121,80 @@ export const GetCrossword = (data: string[], count: number): Crossword => {
     return {
       puzzle,
       width,
-      height
+      height,
+      currentIndexes: [],
+      horizon: false
     };
   } catch {
     return initialValue;
   }
+}
+
+export const UpdateCrossword = (
+  item: CrosswordPuzzle, crossword: Crossword
+) : Promise<Crossword> => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      let newCrossword = { ...crossword };
+
+      newCrossword.currentIndexes = [];
+
+      for (let i = 0; i < crossword.puzzle.length; i++) {
+        for (let j = 0; j < crossword.puzzle[0].length; j++) {
+          newCrossword.puzzle[i][j].clicked = false;
+          newCrossword.puzzle[i][j].userInput = '';
+        }
+      }
+
+      if (item.clickable.length === 1) {
+        if (item.clickable[0].isHorizon) {
+          for (let i = 0; i < item.clickable[0].indexes.length; i++) {
+            newCrossword.currentIndexes.push([item.clickable[0].indexes[i][0], item.clickable[0].indexes[i][0], item.clickable[0].indexes[i][1]]);
+            newCrossword.puzzle[item.clickable[0].indexes[i][0]][item.clickable[0].indexes[i][0], item.clickable[0].indexes[i][1]].clicked = true;
+          }
+        } else {
+          for (let i = 0; i < item.clickable[0].indexes.length; i++) {
+            newCrossword.currentIndexes.push([item.clickable[0].indexes[i][0], item.clickable[0].indexes[i][0], item.clickable[0].indexes[i][1]]);
+            newCrossword.puzzle[item.clickable[0].indexes[i][0]][item.clickable[0].indexes[i][0], item.clickable[0].indexes[i][1]].clicked = true;
+          }
+        }
+      } else if (item.clickable.length === 2) {
+        if (item.horizonActive) {
+          if (item.clickable[0].isHorizon === false) {
+            for (let i = 0; i < item.clickable[0].indexes.length; i++) {
+              newCrossword.currentIndexes.push([item.clickable[0].indexes[i][0], item.clickable[0].indexes[i][0], item.clickable[0].indexes[i][1]]);
+              newCrossword.puzzle[item.clickable[0].indexes[i][0]][item.clickable[0].indexes[i][0], item.clickable[0].indexes[i][1]].clicked = true;
+            }
+          }
+          else if (item.clickable[1].isHorizon === false) {
+            for (let i = 0; i < item.clickable[1].indexes.length; i++) {
+              newCrossword.currentIndexes.push([item.clickable[1].indexes[i][0], item.clickable[1].indexes[i][0], item.clickable[1].indexes[i][1]]);
+              newCrossword.puzzle[item.clickable[1].indexes[i][0]][item.clickable[1].indexes[i][0], item.clickable[1].indexes[i][1]].clicked = true;
+            }
+          }
+        } else {
+          if (item.clickable[0].isHorizon) {
+            for (let i = 0; i < item.clickable[0].indexes.length; i++) {
+              newCrossword.currentIndexes.push([item.clickable[0].indexes[i][0], item.clickable[0].indexes[i][0], item.clickable[0].indexes[i][1]]);
+              newCrossword.puzzle[item.clickable[0].indexes[i][0]][item.clickable[0].indexes[i][0], item.clickable[0].indexes[i][1]].clicked = true;
+            }
+          }
+          else if (item.clickable[1].isHorizon) {
+            for (let i = 0; i < item.clickable[1].indexes.length; i++) {
+              newCrossword.currentIndexes.push([item.clickable[1].indexes[i][0], item.clickable[1].indexes[i][0], item.clickable[1].indexes[i][1]]);
+              newCrossword.puzzle[item.clickable[1].indexes[i][0]][item.clickable[1].indexes[i][0], item.clickable[1].indexes[i][1]].clicked = true;
+            }
+          }
+        }
+
+        const newStatus: boolean = !item.horizonActive;
+        item.horizonActive = newStatus;
+        newCrossword.horizon = newStatus;
+      }
+
+      resolve(newCrossword);
+    }, 100);
+  });
 }
 
 export const GetCorrectAnswer = (item: CrosswordPuzzle): string => {
@@ -135,50 +211,66 @@ export const GetCorrectAnswer = (item: CrosswordPuzzle): string => {
   return '';
 }
 
-export const ClickCrossword = (item: CrosswordPuzzle, crossword: Crossword): Crossword => {
-  let newCrossword = { ...crossword };
+export const SetAnswer = (
+  item: Crossword,
+  eventKey: string,
+  indexes: number[][],
+  correct: string
+) : Promise<Crossword> => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      let temp = { ...item };
 
-  for (let i = 0; i < crossword.puzzle.length; i++) {
-    for (let j = 0; j < crossword.puzzle[0].length; j++) {
-      newCrossword.puzzle[i][j].clicked = false;
-    }
-  }
+      if (eventKey === 'Backspace' || eventKey === 'Delete') {
+        for (let i = indexes.length - 1; i > 0; i--) {
+          if (temp.puzzle[indexes[i][0]][indexes[i][2]].done) {
 
-  if (item.clickable.length === 1) {
-    if (item.clickable[0].isHorizon) {
-      for (let i = 0; i < item.clickable[0].indexes.length; i++) {
-        newCrossword.puzzle[item.clickable[0].indexes[i][0]][item.clickable[0].indexes[i][0], item.clickable[0].indexes[i][1]].clicked = true;
-      }
-    } else {
-      for (let i = 0; i < item.clickable[0].indexes.length; i++) {
-        newCrossword.puzzle[item.clickable[0].indexes[i][0]][item.clickable[0].indexes[i][0], item.clickable[0].indexes[i][1]].clicked = true;
-      }
-    }
-  } else if (item.clickable.length === 2) {
-    if (item.horizonActive) {
-      if (!item.clickable[0].isHorizon) {
-        for (let i = 0; i < item.clickable[0].indexes.length; i++) {
-          newCrossword.puzzle[item.clickable[0].indexes[i][0]][item.clickable[0].indexes[i][0], item.clickable[0].indexes[i][1]].clicked = true;
-        }
-      } else if (!item.clickable[1].isHorizon) {
-        for (let i = 0; i < item.clickable[1].indexes.length; i++) {
-          newCrossword.puzzle[item.clickable[1].indexes[i][0]][item.clickable[1].indexes[i][0], item.clickable[1].indexes[i][1]].clicked = true;
-        }
-      }
-    } else {
-      if (item.clickable[0].isHorizon) {
-        for (let i = 0; i < item.clickable[0].indexes.length; i++) {
-          newCrossword.puzzle[item.clickable[0].indexes[i][0]][item.clickable[0].indexes[i][0], item.clickable[0].indexes[i][1]].clicked = true;
-        }
-      } else if (item.clickable[1].isHorizon) {
-        for (let i = 0; i < item.clickable[1].indexes.length; i++) {
-          newCrossword.puzzle[item.clickable[1].indexes[i][0]][item.clickable[1].indexes[i][0], item.clickable[1].indexes[i][1]].clicked = true;
-        }
-      }
-    }
+          } else {
+            while (temp.puzzle[indexes[i][0]][indexes[i][2]].userInput === '' && i !== 0) {
+              temp.puzzle[indexes[i][0]][indexes[i][2]].userInput = '';
+              i--;
+            }
 
-    item.horizonActive = !item.horizonActive;
-  }
+            temp.puzzle[indexes[i][0]][indexes[i][2]].userInput = '';
 
-  return newCrossword;
+            break;
+          }
+        }
+
+        resolve({ ...temp });
+      } else if (alphabets.includes(eventKey.toLowerCase())) {
+        let check: string = '';
+
+        for (let i = 0; i < indexes.length; i++) {
+          if (temp.puzzle[indexes[i][0]][indexes[i][2]].done) {
+            check += temp.puzzle[indexes[i][0]][indexes[i][2]].alphabet;
+          } else {
+            check += temp.puzzle[indexes[i][0]][indexes[i][2]].userInput;
+
+            if (temp.puzzle[indexes[i][0]][indexes[i][2]].userInput === '') {
+              temp.puzzle[indexes[i][0]][indexes[i][2]].userInput = eventKey.toLowerCase();
+              check += eventKey.toLowerCase();
+
+              break;
+            }
+          }
+        }
+
+        if (check.length === correct.length) {
+          if (check === correct) {
+          for (let i = 0; i < indexes.length; i++) {
+            temp.puzzle[indexes[i][0]][indexes[i][2]].done = true;
+          }
+          }
+          else {
+            for (let i = 0; i < indexes.length; i++) {
+              temp.puzzle[indexes[i][0]][indexes[i][2]].wrong = true;
+            }
+          }
+        }
+
+        resolve({ ...temp });
+      }
+    }, 100);
+  });
 }

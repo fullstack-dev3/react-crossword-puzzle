@@ -19,6 +19,9 @@ export class CrosswordPuzzle {
   horizonActive: boolean = false;
   hCorrect: string;
   vCorrect: string;
+  userInput: string;
+  done: boolean;
+  wrong: boolean;
 
   constructor(
     key: string,
@@ -30,7 +33,10 @@ export class CrosswordPuzzle {
     clicked: boolean,
     horizonActive: boolean,
     hCorrect: string,
-    vCorrect: string
+    vCorrect: string,
+    userInput: string,
+    done: boolean,
+    wrong: boolean
   ) {
     this.key = key;
     this.alphabet = alphabet;
@@ -42,6 +48,9 @@ export class CrosswordPuzzle {
     this.horizonActive = horizonActive;
     this.hCorrect = hCorrect;
     this.vCorrect = vCorrect;
+    this.userInput = userInput;
+    this.done = done;
+    this.wrong = wrong;
   }
 }
 
@@ -49,10 +58,20 @@ export class Crossword {
   puzzle: CrosswordPuzzle[][];
   height: number;
   width: number;
+  currentIndexes: number[][];
+  horizon: boolean;
 
-  constructor(puzzle: CrosswordPuzzle[][], height: number, width: number) {
+  constructor(
+    puzzle: CrosswordPuzzle[][],
+    height: number,
+    width: number,
+    currentIndexes: number[][],
+    horizon: boolean
+  ) {
     this.puzzle = puzzle;
     this.height = height;
     this.width = width;
+    this.currentIndexes = currentIndexes;
+    this.horizon = horizon;
   }
 }
