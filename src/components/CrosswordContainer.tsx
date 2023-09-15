@@ -30,6 +30,7 @@ const CrosswordContainer: React.FC<{level: string}> = (props) => {
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
     return () => { window.removeEventListener('keydown', handleKeyDown); };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -48,9 +49,12 @@ const CrosswordContainer: React.FC<{level: string}> = (props) => {
     if (!item.empty && !item.done) {
       UpdateCrossword(item, data).then((newCrossword: Crossword) => {
         setCrosswordArray({ ...newCrossword });
-        setSelectedIndexes(newCrossword.currentIndexes);
+
+        const indexes = newCrossword.currentIndexes;
+        selectedIndexesRef.current = indexes;
+        setSelectedIndexes(indexes);
       });
-      
+
       const answer = GetCorrectAnswer(item);
       correctAnswerRef.current = answer;
       setCorrectAnswer(answer);
@@ -65,11 +69,13 @@ const CrosswordContainer: React.FC<{level: string}> = (props) => {
   const handleKeyDown = (event: any) => {
     let temp = { ...crosswordRef.current };
 
-    SetAnswer(temp, event.key, selectedIndexesRef.current, correctAnswerRef.current)
-      .then((newCrossword: Crossword) => {
-        setData({ ...newCrossword });
-        setSelectedIndexes(newCrossword.currentIndexes);
-      });
+    SetAnswer(temp, event.key, selectedIndexesRef.current, correctAnswerRef.current).then((newCrossword: Crossword) => {
+      setCrosswordArray({ ...newCrossword });
+
+      const indexes = newCrossword.currentIndexes;
+      selectedIndexesRef.current = indexes;
+      setSelectedIndexes(indexes);
+    });
   };
 
   return (
@@ -84,18 +90,26 @@ const CrosswordContainer: React.FC<{level: string}> = (props) => {
               height: `${100 / data.height}%`
             }}
           >
-            {item.map(subItem => {
+            {item.map((subItem) => {
               return (
                 <div
                   key={subItem.key}
                   className='text-center'
                   style={{
-                    backgroundColor: subItem.done ? '#FFF' : subItem.clicked ? '#E6CBF5' : '#FFF',
+                    alignItems: 'center',
+                    backgroundColor: subItem.empty
+                      ? '#FFFFFF'
+                      : subItem.done
+                        ? '#E8E8E8'
+                        : subItem.clicked ? '#E6CBF5' : '#E8E8E8',
                     borderColor: 'gray',
                     borderStyle: subItem.empty ? 'none' : 'solid',
                     borderWidth: 1,
+                    color: subItem.done ? '#008000' : subItem.wrong ? '#FA2525' : '#000',
+                    display: 'flex',
                     fontSize: 24,
-                    height: '100%',
+                    fontWeight: 'bold',
+                    justifyContent: 'center',
                     width: `${100 / data.width}%`
                   }}
                   onClick={() => clickItemHandler(subItem)}
@@ -107,7 +121,7 @@ const CrosswordContainer: React.FC<{level: string}> = (props) => {
           </div>
         );
       })}
-    </div >
+    </div>
   );
 };
 

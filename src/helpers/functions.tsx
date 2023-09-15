@@ -81,15 +81,17 @@ export const GetCrossword = (data: string[], count: number): Crossword => {
           indexes: indexes,
           isHorizon: element.isHorizon
         };
+
         for (let x = element.xNum; x < (element.wordStr.length + element.xNum); x++) {
           let found: CrosswordPuzzle | undefined =
             puzzle[element.yNum].find(item => item.y === element.yNum && item.x === x);
+
           if (found) {
             found.alphabet = element.wordStr[index];
             found.empty = false;
             found.clickable = [...found.clickable, clickibleIndex];
             found.hCorrect = element.wordStr;
-            index++
+            index++;
           }
         }
       } else {
@@ -107,12 +109,13 @@ export const GetCrossword = (data: string[], count: number): Crossword => {
         for (let y = element.yNum; y < (element.wordStr.length + element.yNum); y++) {
           let found: CrosswordPuzzle | undefined =
             puzzle[y].find(item => item.x === element.xNum && item.y === y);
+
           if (found) {
             found.alphabet = element.wordStr[index];
             found.empty = false;
             found.clickable = [...found.clickable, clickibleIndex];
             found.vCorrect = element.wordStr;
-            index++
+            index++;
           }
         }
       }
@@ -165,8 +168,7 @@ export const UpdateCrossword = (
               newCrossword.currentIndexes.push([item.clickable[0].indexes[i][0], item.clickable[0].indexes[i][0], item.clickable[0].indexes[i][1]]);
               newCrossword.puzzle[item.clickable[0].indexes[i][0]][item.clickable[0].indexes[i][0], item.clickable[0].indexes[i][1]].clicked = true;
             }
-          }
-          else if (item.clickable[1].isHorizon === false) {
+          } else if (item.clickable[1].isHorizon === false) {
             for (let i = 0; i < item.clickable[1].indexes.length; i++) {
               newCrossword.currentIndexes.push([item.clickable[1].indexes[i][0], item.clickable[1].indexes[i][0], item.clickable[1].indexes[i][1]]);
               newCrossword.puzzle[item.clickable[1].indexes[i][0]][item.clickable[1].indexes[i][0], item.clickable[1].indexes[i][1]].clicked = true;
@@ -178,8 +180,7 @@ export const UpdateCrossword = (
               newCrossword.currentIndexes.push([item.clickable[0].indexes[i][0], item.clickable[0].indexes[i][0], item.clickable[0].indexes[i][1]]);
               newCrossword.puzzle[item.clickable[0].indexes[i][0]][item.clickable[0].indexes[i][0], item.clickable[0].indexes[i][1]].clicked = true;
             }
-          }
-          else if (item.clickable[1].isHorizon) {
+          } else if (item.clickable[1].isHorizon) {
             for (let i = 0; i < item.clickable[1].indexes.length; i++) {
               newCrossword.currentIndexes.push([item.clickable[1].indexes[i][0], item.clickable[1].indexes[i][0], item.clickable[1].indexes[i][1]]);
               newCrossword.puzzle[item.clickable[1].indexes[i][0]][item.clickable[1].indexes[i][0], item.clickable[1].indexes[i][1]].clicked = true;
@@ -258,11 +259,10 @@ export const SetAnswer = (
 
         if (check.length === correct.length) {
           if (check === correct) {
-          for (let i = 0; i < indexes.length; i++) {
-            temp.puzzle[indexes[i][0]][indexes[i][2]].done = true;
-          }
-          }
-          else {
+            for (let i = 0; i < indexes.length; i++) {
+              temp.puzzle[indexes[i][0]][indexes[i][2]].done = true;
+            }
+          } else {
             for (let i = 0; i < indexes.length; i++) {
               temp.puzzle[indexes[i][0]][indexes[i][2]].wrong = true;
             }
