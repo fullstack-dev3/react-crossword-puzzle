@@ -35,13 +35,13 @@ const CrosswordContainer: React.FC<{level: string}> = (props) => {
 
   useEffect(() => {
     if (props.level === 'easy' && Easy.length > 0) {
-      setData(GetCrossword(Easy, 5));
+      setData(GetCrossword(Easy, 5!));
     }
     if (props.level === 'normal' && Normal.length > 0) {
-      setData(GetCrossword(Normal, 10));
+      setData(GetCrossword(Normal, 10)!);
     }
     if (props.level === 'expert' && Expert.length > 0) {
-      setData(GetCrossword(Expert, 20));
+      setData(GetCrossword(Expert, 20)!);
     }
   }, [props.level]);
 
@@ -69,13 +69,14 @@ const CrosswordContainer: React.FC<{level: string}> = (props) => {
   const handleKeyDown = (event: any) => {
     let temp = { ...crosswordRef.current };
 
-    SetAnswer(temp, event.key, selectedIndexesRef.current, correctAnswerRef.current).then((newCrossword: Crossword) => {
-      setCrosswordArray({ ...newCrossword });
+    SetAnswer(temp, event.key, selectedIndexesRef.current, correctAnswerRef.current)
+      .then((newCrossword: Crossword) => {
+        setCrosswordArray({ ...newCrossword });
 
-      const indexes = newCrossword.currentIndexes;
-      selectedIndexesRef.current = indexes;
-      setSelectedIndexes(indexes);
-    });
+        const indexes = newCrossword.currentIndexes;
+        selectedIndexesRef.current = indexes;
+        setSelectedIndexes(indexes);
+      });
   };
 
   return (

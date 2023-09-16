@@ -15,7 +15,7 @@ const GameContainer = () => {
       </div>
       <div className='col-md-4 p-2'>
         <Card>
-          <LevelContainer changeLevel={(level) => setLevel(level)} />
+          <LevelContainer level={level} changeLevel={(level) => setLevel(level)} />
         </Card>
       </div>
     </div>

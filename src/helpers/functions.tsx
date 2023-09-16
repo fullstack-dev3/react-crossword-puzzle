@@ -7,19 +7,20 @@ const alphabets = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 export const ShuffleData = (data: string[]): string[] => {
   let result: string[] = [];
+  let init: string[] = [...data];
 
   try {
-    while (data.length > 0) {
-      const index = Math.floor(Math.random() * data.length);
+    while (init.length > 0) {
+      const index = Math.floor(Math.random() * init.length);
       
-      result.push(data[index]);
-      data.splice(index, 1);
+      result.push(init[index]);
+      init.splice(index, 1);
     }
-
-    return result;
   } catch {
-    return data;
+    result = init;
   }
+
+  return result;
 };
 
 export const GetCrossword = (data: string[], count: number): Crossword => {
