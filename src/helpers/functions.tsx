@@ -36,6 +36,49 @@ export const GetCrossword = (data: string[], count: number): Crossword => {
     const shuffle = [...ShuffleData(data)];
     
     const result = CWG(shuffle.slice(0, count));
+
+    let words: any[] = [];
+    result.positionObjArr.forEach((item: any) => {
+      const word = item.wordStr;
+      const indexes: number[] = [];
+
+      let limit = 1;
+      if (word.length < 3) {
+        limit = 1;
+      } else if (word.length < 4) {
+        limit = 2;
+      } else if (word.length < 6) {
+        limit = 3;
+      } else if (word.length < 10) {
+        limit = 4;
+      } else {
+        limit = Math.round(word.length / 3);
+      }
+
+      if (count > 5 && limit > 2) {
+        limit--;
+      }
+
+      if (count > 10 && limit > 1) {
+        limit--
+      }
+
+      while (indexes.length < limit) {
+        let index = Math.round((word.length - 1) * Math.random());
+        if (index === 0) {
+          index++;
+        }
+
+        if (!indexes.includes(index)) {
+          indexes.push(index);
+        }
+      }
+
+      words.push({
+        word,
+        indexes
+      })
+    });
     
     const height: number = result.height;
     const width: number = result.width;
@@ -69,6 +112,8 @@ export const GetCrossword = (data: string[], count: number): Crossword => {
     }
 
     result.positionObjArr.forEach((element: any) => {
+      const wordItem = words.find(item => item.word === element.wordStr);
+
       let index = 0;
       let indexes: number[][] = [];
       let clickable: clickable[] = [];
@@ -89,6 +134,7 @@ export const GetCrossword = (data: string[], count: number): Crossword => {
 
           if (found) {
             found.alphabet = element.wordStr[index];
+            found.done = wordItem.indexes.includes(index);
             found.empty = false;
             found.clickable = [...found.clickable, clickibleIndex];
             found.hCorrect = element.wordStr;
@@ -113,6 +159,7 @@ export const GetCrossword = (data: string[], count: number): Crossword => {
 
           if (found) {
             found.alphabet = element.wordStr[index];
+            found.done = wordItem.indexes.includes(index);
             found.empty = false;
             found.clickable = [...found.clickable, clickibleIndex];
             found.vCorrect = element.wordStr;
