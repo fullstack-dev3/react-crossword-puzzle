@@ -42,35 +42,35 @@ export const GetCrossword = (data: string[], count: number): Crossword => {
       const word = item.wordStr;
       const indexes: number[] = [];
 
-      let limit = 1;
-      if (word.length < 3) {
-        limit = 1;
-      } else if (word.length < 4) {
-        limit = 2;
-      } else if (word.length < 6) {
-        limit = 3;
-      } else if (word.length < 10) {
-        limit = 4;
+      if (word.length < 4) {
+        indexes.push(0);
       } else {
-        limit = Math.round(word.length / 3);
-      }
-
-      if (count > 5 && limit > 2) {
-        limit--;
-      }
-
-      if (count > 10 && limit > 1) {
-        limit--
-      }
-
-      while (indexes.length < limit) {
-        let index = Math.round((word.length - 1) * Math.random());
-        if (index === 0) {
-          index++;
+        let limit = 1;
+        if (word.length < 6) {
+          limit = 3;
+        } else if (word.length < 10) {
+          limit = 4;
+        } else {
+          limit = Math.round(word.length / 3);
         }
 
-        if (!indexes.includes(index)) {
-          indexes.push(index);
+        if (count > 5 && limit > 2) {
+          limit--;
+        }
+  
+        if (count > 10 && limit > 1) {
+          limit--
+        }
+
+        while (indexes.length < limit) {
+          let index = Math.round((word.length - 1) * Math.random());
+          if (index === 0) {
+            index++;
+          }
+  
+          if (!indexes.includes(index)) {
+            indexes.push(index);
+          }
         }
       }
 
