@@ -1,0 +1,62 @@
+@keyframes leftAnimation {
+  0% {
+    transform: translatey(-15%) translateX(5%);
+  }
+  50% {
+    transform: translatey(-25%) translateX(-10%);
+  }
+  100% {
+    transform: translatey(-15%) translateX(5%);
+  }
+}
+
+@keyframes rightAnimation {
+  0% {
+    transform: translatey(-30%) translateX(0px);
+  }
+  50% {
+    transform: translatey(-20%) translateX(5%);
+  }
+  100% {
+    transform: translatey(-30%) translateX(0px);
+  }
+}
+
+body {
+  background-color: #7200d1;
+  background-image: url(./img/planetes.png), url(./img/stars.png), linear-gradient(to bottom, #3f006a 0%, #7200d1 100%);
+  background-position: center top, center top, center top;
+  background-repeat: no-repeat, repeat, no-repeat;
+  background-size: 100VW auto, auto auto, auto 1500px;
+}
+
+.nav {
+  height: auto;
+  width: 100%;
+}
+
+.nav .container {
+  align-items: center;
+  display: flex;
+  height: auto;
+  justify-content: space-between;
+  margin: 0 auto;
+  max-width: 800px;
+  width: 80%;
+}
+
+.nav .container .left {
+  -webkit-backface-visibility: hidden;
+  -webkit-filter: blur(0);
+  -webkit-transform: translateZ(0) scale(1, 1);
+  animation: leftAnimation 9s ease-in-out infinite;
+  backface-visibility: hidden;
+  filter: blur(0);
+  margin-top: 110px;
+  transform: translateZ(0) scale(1, 1);
+}
+
+.nav .container .right {
+  animation: rightAnimation 9s ease-in-out infinite;
+  margin-top: 80px;
+}
