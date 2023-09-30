@@ -60,3 +60,69 @@ body {
   animation: rightAnimation 9s ease-in-out infinite;
   margin-top: 80px;
 }
+
+.game-panel {
+  display: block;
+  margin: 50px auto 0;
+  max-width: 1400px;
+  text-align: center;
+  width: 100%;
+}
+
+.game-panel .element {
+  -moz-border-radius: 6px;
+  -moz-box-shadow: 1px 1px 8px 0px rgba(0, 0, 0, 0.55);
+  -webkit-border-radius: 6px;
+  -webkit-box-shadow: 1px 1px 8px 0px rgba(0, 0, 0, 0.55);
+  background-color: #fff;
+  border-radius: 6px;
+  box-shadow: 1px 1px 8px 0px rgba(0, 0, 0, 0.55);
+  color: #29b1e9;
+  cursor: pointer;
+  display: inline-block;
+  font-family: tahoma;
+  font-size: 14px;
+  height: auto;
+  letter-spacing: 0px;
+  line-height: 22px;
+  margin: 15px;
+  max-width: 390px;
+  padding: 10px;
+  position: relative;
+  text-align: center;
+  width: 100%;
+}
+
+.game-panel .element:hover {
+  color: #fff;
+}
+
+.game-panel .element:nth-child(odd) {
+  transform: rotate(1.2deg);
+}
+
+.game-panel .element:nth-child(even) {
+  transform: rotate(-1.2deg);
+}
+
+.game-panel .element:hover:nth-child(odd) {
+  background-color: #e72878;
+  transform: rotate(-1.2deg);
+}
+
+.game-panel .element:hover:nth-child(even) {
+  background-color: #f69626;
+  transform: rotate(1.2deg);
+}
+
+.game-panel .element .title {
+  color: #29b1e9;
+  display: block;
+  font-size: 16px;
+  font-weight: bold;
+  letter-spacing: -0.5px;
+  line-height: 16px;
+  margin-bottom: 10px;
+  text-align: center;
+  width: 100%;
+}

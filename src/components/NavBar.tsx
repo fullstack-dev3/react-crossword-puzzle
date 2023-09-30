@@ -27,8 +27,4 @@ const NavBar = () => {
   );
 }
 
-<style>
-
-</style>
-
 export default NavBar;
