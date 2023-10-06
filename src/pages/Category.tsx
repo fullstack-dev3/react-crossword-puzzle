@@ -1,3 +1,5 @@
+import React from 'react';
+import NavBar from '../components/NavBar';
 import images from '../helpers/images';
 
 const titles = [
@@ -52,24 +54,27 @@ const names = [
   images.cross34,
 ];
 
-const GamePanel = () => {
+const Category = () => {
   return (
-    <div className="game-panel">
-      {titles.map((item, index) =>
-        <div key={index} className="element">
-          <h5 className="title">
-            Crossword {index + 1} - {item}
-          </h5>
-          <img
-            src={names[index]}
-            width="350"
-            height="277"
-            alt=""
-          />
-        </div>
-      )}
-    </div>
+    <React.Fragment>
+      <NavBar />
+      <div className="game-panel">
+        {titles.map((item, index) =>
+          <div key={index} className="element">
+            <h5 className="title">
+              Crossword {index + 1} - {item}
+            </h5>
+            <img
+              src={names[index]}
+              width="350"
+              height="277"
+              alt=""
+            />
+          </div>
+        )}
+      </div>
+    </React.Fragment>
   );
 }
 
-export default GamePanel;
+export default Category;

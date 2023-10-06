@@ -2,6 +2,8 @@
 import logo from '../assets/img/logo.png';
 import leftKid from '../assets/img/kid_orange.png';
 import rightKid from '../assets/img/kid_fushia.png';
+import level from '../assets/img/level.png';
+import category from '../assets/img/category.png';
 
 import cross01 from '../assets/img/01.jpg';
 import cross02 from '../assets/img/02.jpg';
@@ -42,6 +44,8 @@ export default {
   logo,
   leftKid,
   rightKid,
+  level,
+  category,
   cross01,
   cross02,
   cross03,

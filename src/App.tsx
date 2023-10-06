@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from './components/Home';
+import Home from './pages/Home';
+import Level from './pages/Level';
+import Category from './pages/Category';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
@@ -7,6 +9,8 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/level" element={<Level />} />
+        <Route path="/category" element={<Category />} />
       </Routes>
     </BrowserRouter>
   );
