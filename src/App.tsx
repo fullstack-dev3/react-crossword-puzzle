@@ -1,14 +1,14 @@
-import React from 'react';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from './components/Home';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import NavBar from './components/NavBar';
-import GamePanel from './components/GamePanel';
 
 function App() {
   return (
-    <React.Fragment>
-      <NavBar />
-      <GamePanel />
-    </React.Fragment>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
