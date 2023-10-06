@@ -61,6 +61,46 @@ body {
   margin-top: 80px;
 }
 
+.level {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 250px);
+  justify-content: center;
+}
+
+.level .glass {
+	background-color: #1338BE;
+	background-image: linear-gradient(#1338BE, #63C5DA);
+  border-radius: 15px;
+  box-shadow: 0px 1px 4px -2px #333;
+	color: #FFF700;
+	font-size: 25px;
+	font-weight: bold;
+  margin: 15px 0;
+	padding: 5px;
+  position: relative;
+  text-align: center;
+	text-decoration: none;
+  text-shadow: 0px -1px #333;
+  width: 180px;
+}
+
+.level .glass:after{
+  background: linear-gradient(rgba(255,255,255,0.8), rgba(255,255,255,0.2));
+  border-radius: 15px;
+	content: '';
+	height: 50%;
+	left: 2px;
+	position: absolute;
+	top: 2px;
+	width: calc(100% - 4px);
+}
+
+.level .glass:hover{
+	background: linear-gradient(#073,#0FA);
+}
+
 .game-panel {
   display: block;
   margin: 50px auto 0;

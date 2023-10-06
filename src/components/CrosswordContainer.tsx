@@ -80,7 +80,7 @@ const CrosswordContainer: React.FC<{level: string}> = (props) => {
   };
 
   return (
-    <div className='p-2' style={{ height: 'calc(100vh - 75px)' }}>
+    <div className='p-2' style={{ height: 'calc(100vh - 250px)' }}>
       {data.puzzle.map((item, index) => {
         return (
           <div
